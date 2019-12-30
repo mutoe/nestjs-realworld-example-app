@@ -37,6 +37,10 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
     "@types/supertest": "^2.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.2.0",
     "jest": "^24.9.0",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
@@ -45,6 +49,32 @@
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.6.3"
   },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "jest"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:jest/recommended"
+    ],
+    "rules": {
+      "comma-dangle": [
+        "off",
+        "always-multiple"
+      ],
+      "@typescript-eslint/explicit-function-return-type": "off"
+    }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",
