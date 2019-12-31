@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:docker": "yarn build && docker build -t mutoe/$npm_package_name:$npm_package_version -t mutoe/$npm_package_name:latest .",
+    "build:docker": "yarn build && docker build -t mutoe/$npm_package_name:latest . && docker push mutoe/$npm_package_name:latest",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
