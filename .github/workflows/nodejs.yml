@@ -37,10 +37,10 @@ jobs:
       - name: Test
         run: yarn test
 
-      - uses: azure/docker-login@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build docker image
-        run: yarn build:docker
+#      - uses: azure/docker-login@v1
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Build docker image
+#        run: yarn build:docker
