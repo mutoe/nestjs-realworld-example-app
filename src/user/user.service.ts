@@ -10,7 +10,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  createUser (user: { email: string; username: string; password: string }): any {
-    throw new Error('Method not implemented.')
+  createUser (userInfo: { email: string; username: string; password: string }) {
+    return this.userRepository.save(Object.assign(new User(), userInfo))
   }
 }

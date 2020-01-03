@@ -14,7 +14,9 @@ describe('UserService', () => {
         UserService,
         {
           provide: getRepositoryToken(User),
-          useClass: Repository,
+          useValue: {
+            save: jest.fn(),
+          },
         },
       ],
     }).compile()
@@ -26,5 +28,12 @@ describe('UserService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined()
     expect(repository).toBeDefined()
+  })
+
+  it('should create user correctly', async function () {
+    const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
+    await service.createUser(user)
+
+    expect(repository.save).toBeCalledWith(Object.assign(new User(), user))
   })
 })
