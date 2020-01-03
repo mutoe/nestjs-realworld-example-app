@@ -9,4 +9,8 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
+  createUser (user: { email: string; username: string; password: string }): any {
+    throw new Error('Method not implemented.')
+  }
 }
