@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import * as request from 'supertest'
-import { AppModule } from '../src/app.module'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { getConnection } from 'typeorm'
+import { UserModule } from '../src/user/user.module'
+import { AppController } from '../src/app.controller'
 
 const ormConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -23,8 +23,9 @@ describe('AppController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(ormConfig),
-        AppModule,
+        UserModule,
       ],
+      controllers: [AppController],
     }).compile()
 
     app = moduleFixture.createNestApplication()

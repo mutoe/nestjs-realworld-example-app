@@ -13,4 +13,8 @@ export class UserService {
   createUser (userInfo: { email: string; username: string; password: string }) {
     return this.userRepository.save(Object.assign(new User(), userInfo))
   }
+
+  async findOne (username: string) {
+    return this.userRepository.findOne({ where: { username } })
+  }
 }

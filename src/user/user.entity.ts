@@ -13,6 +13,9 @@ export class User {
   @Column({ length: 20 })
   username: string
 
+  @Column()
+  password: string
+
   @Column({ nullable, type: 'text' })
   bio: null | string
 

@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Connection } from 'typeorm'
 import { UserModule } from './user/user.module'
 import { UserService } from './user/user.service'
-import { User } from './user/user.entity'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -16,11 +16,11 @@ import { User } from './user/user.entity'
       username: 'realworld',
       password: '123456',
       database: 'nestjs',
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: ['dist/**/*.entity.js', 'src/**/*.ts'],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
     UserModule,
+    AuthModule,
   ],
   exports: [TypeOrmModule],
   controllers: [AppController],

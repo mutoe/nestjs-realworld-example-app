@@ -11,7 +11,8 @@ export class AppController {
   }
 
   @Post('/auth/register')
-  register (@Body() requestBody: { email: string; username: string; password: string }) {
-    return this.userService.createUser(requestBody)
+  async register (@Body() requestBody: { email: string; username: string; password: string }) {
+    const user = await this.userService.createUser(requestBody)
+    return { user }
   }
 }

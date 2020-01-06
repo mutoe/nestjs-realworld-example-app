@@ -16,6 +16,7 @@ describe('UserService', () => {
           provide: getRepositoryToken(User),
           useValue: {
             save: jest.fn(),
+            findOne: jest.fn(),
           },
         },
       ],
@@ -35,5 +36,14 @@ describe('UserService', () => {
     await service.createUser(user)
 
     expect(repository.save).toBeCalledWith(Object.assign(new User(), user))
+  })
+
+  it('should find user correctly', async function () {
+    const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
+    jest.spyOn(repository, 'findOne').mockResolvedValue(user as User)
+    const userResult = await service.findOne(user.username)
+
+    expect(userResult).toBe(user)
+    expect(repository.findOne).toBeCalledWith({ where: { username: user.username } })
   })
 })

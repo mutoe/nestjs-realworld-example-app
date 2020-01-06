@@ -39,7 +39,7 @@ describe('AppController', () => {
         password: '12345678',
       }
 
-      jest.spyOn(userService, 'createUser').mockResolvedValue({ user: {} })
+      jest.spyOn(userService, 'createUser').mockResolvedValue({} as User)
       const response = await appController.register(requestBody)
       expect(userService.createUser).toBeCalledTimes(1)
       expect(response).toHaveProperty('user', expect.any(Object))
