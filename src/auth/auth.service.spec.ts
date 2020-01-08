@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { AuthService } from './auth.service'
-import { User } from '../user/user.entity'
+import { UserEntity } from '../user/user.entity'
 import { UserService } from '../user/user.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
+import { JwtService } from '@nestjs/jwt'
+import { cryptoPassword } from '../utils'
 
 describe('AuthService', () => {
   let authService: AuthService
@@ -14,7 +16,11 @@ describe('AuthService', () => {
         UserService,
         AuthService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
+          useValue: {},
+        },
+        {
+          provide: JwtService,
           useValue: {},
         },
       ],
@@ -31,7 +37,8 @@ describe('AuthService', () => {
   it('should get user profile after validateUser', async function () {
     const password = '12345678'
     const username = 'mutoe'
-    jest.spyOn(userService, 'findOne').mockResolvedValue({ username, password } as User)
+    jest.spyOn(userService, 'findOne')
+      .mockResolvedValue({ username, password: cryptoPassword(password) } as UserEntity)
     const user = await authService.validateUser(username, password)
 
     expect(user).toHaveProperty('username', username)
@@ -40,8 +47,7 @@ describe('AuthService', () => {
 
   it('should return null when invalid password', async function () {
     jest.spyOn(userService, 'findOne').mockResolvedValue(undefined)
-    const result = await authService.validateUser('mutoe', 'invalidPassword')
 
-    expect(result).toBeNull()
+    await expect(authService.validateUser('mutoe', 'invalidPassword')).rejects.toThrow()
   })
 })

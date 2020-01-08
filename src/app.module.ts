@@ -6,19 +6,12 @@ import { Connection } from 'typeorm'
 import { UserModule } from './user/user.module'
 import { UserService } from './user/user.service'
 import { AuthModule } from './auth/auth.module'
+import { UserEntity } from './user/user.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'realworld',
-      password: '123456',
-      database: 'nestjs',
-      entities: ['dist/**/*.entity.js', 'src/**/*.ts'],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(),
+    TypeOrmModule.forFeature([UserEntity]),
     UserModule,
     AuthModule,
   ],

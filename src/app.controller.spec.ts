@@ -2,8 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { AppController } from './app.controller'
 import { UserService } from './user/user.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { User } from './user/user.entity'
+import { UserEntity } from './user/user.entity'
 import { Repository } from 'typeorm'
+import { JwtService } from '@nestjs/jwt'
+import { AuthService } from './auth/auth.service'
 
 describe('AppController', () => {
   let appController: AppController
@@ -14,9 +16,14 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [
         UserService,
+        AuthService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useClass: Repository,
+        },
+        {
+          provide: JwtService,
+          useValue: {},
         },
       ],
     }).compile()
@@ -39,7 +46,7 @@ describe('AppController', () => {
         password: '12345678',
       }
 
-      jest.spyOn(userService, 'createUser').mockResolvedValue({} as User)
+      jest.spyOn(userService, 'createUser').mockResolvedValue({} as UserEntity)
       const response = await appController.register(requestBody)
       expect(userService.createUser).toBeCalledTimes(1)
       expect(response).toHaveProperty('user', expect.any(Object))

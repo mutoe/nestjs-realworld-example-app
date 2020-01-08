@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { cryptoPassword } from '../utils'
 
 const nullable = true
 
-@Entity()
-export class User {
+@Entity('user')
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -13,8 +14,14 @@ export class User {
   @Column({ length: 20 })
   username: string
 
-  @Column()
+  @Column({ length: 64 })
   password: string
+
+  @BeforeUpdate()
+  @BeforeInsert()
+  hashPassword () {
+    this.password = cryptoPassword(this.password)
+  }
 
   @Column({ nullable, type: 'text' })
   bio: null | string
