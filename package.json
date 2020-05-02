@@ -28,6 +28,7 @@
     "@nestjs/jwt": "^7.0.0",
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^7.0.9",
+    "@nestjs/swagger": "^4.5.3",
     "@nestjs/typeorm": "^7.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
@@ -38,6 +39,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.3",
+    "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.22"
   },
   "devDependencies": {
