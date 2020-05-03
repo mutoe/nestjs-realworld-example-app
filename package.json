@@ -1,6 +1,6 @@
 {
   "name": "nestjs-realworld-example-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "repository": "https://github.com/mutoe/nestjs-realworld-example-app",
   "author": "mutoe <mutoe@foxmail.com>",
