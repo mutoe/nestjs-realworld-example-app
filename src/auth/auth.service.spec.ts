@@ -40,6 +40,7 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should return user profile when register successful', async () => {
+      jest.spyOn(userService, 'findUser').mockResolvedValue(undefined)
       jest.spyOn(userService, 'createUser').mockResolvedValue({ foo: 'bar' } as never)
       jest.spyOn(authService, 'generateToken').mockReturnValue('token')
       const registerDto = { email: 'foo@bar.com', username: 'foobar', password: '123456' }
