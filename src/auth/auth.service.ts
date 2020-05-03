@@ -16,7 +16,7 @@ export class AuthService {
   ) {}
 
   async register (registerDto: RegisterDto): Promise<AuthData> {
-    let user: UserEntity | Omit<UserEntity, 'password'>
+    let user: UserEntity
     user = await this.userService.findUser({ username: registerDto.username })
     if (user?.id) {
       throw new BadRequestException('username is exist')
@@ -25,9 +25,9 @@ export class AuthService {
     if (user?.id) {
       throw new BadRequestException('email is exist')
     }
-    user = await this.userService.createUser(registerDto)
-    const token = this.generateToken(user.id, user.email)
-    return { ...user, token }
+    const profile = await this.userService.createUser(registerDto)
+    const token = this.generateToken(profile.id, profile.email)
+    return { ...profile, token }
   }
 
   async login (loginDto: LoginDto): Promise<AuthData> {

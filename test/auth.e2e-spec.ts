@@ -4,9 +4,9 @@ import { AppController } from 'app.controller'
 import { AuthModule } from 'auth/auth.module'
 import * as request from 'supertest'
 import { UserModule } from 'user/user.module'
-import ormConfig from '../test/orm-config'
+import ormConfig from './orm-config'
 
-describe('AppController (e2e)', () => {
+describe('Auth Module Integration', () => {
   let app
 
   beforeAll(async () => {
@@ -34,10 +34,11 @@ describe('AppController (e2e)', () => {
         email: 'mutoe@foxmail.com',
         password: '12345678',
       }
-      await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/auth/register')
         .send(requestBody)
-        .expect(201)
+
+      expect(response.status).toBe(201)
     })
 
     it('should return 400 given exist username', async () => {
@@ -49,7 +50,8 @@ describe('AppController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/auth/register')
         .send(requestBody)
-        .expect(400)
+
+      expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'username is exist')
     })
 
@@ -62,7 +64,8 @@ describe('AppController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/auth/register')
         .send(requestBody)
-        .expect(400)
+
+      expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'email is exist')
     })
   })
@@ -73,10 +76,11 @@ describe('AppController (e2e)', () => {
         email: 'mutoe@foxmail.com',
         password: '12345678',
       }
-      await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/auth/login')
         .send(requestBody)
-        .expect(200)
+
+      expect(response.status).toBe(200)
     })
 
     it('should return 400 when login given incorrect user name', async () => {
@@ -84,11 +88,12 @@ describe('AppController (e2e)', () => {
         email: 'not-exist@example.com',
         password: '12345678',
       }
-      const res = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/auth/login')
         .send(requestBody)
-        .expect(400)
-      expect(res.body).toHaveProperty('message', 'user is not exist')
+
+      expect(response.status).toBe(400)
+      expect(response.body).toHaveProperty('message', 'user is not exist')
     })
 
     it('should return 400 when login given incorrect password', async () => {
@@ -96,11 +101,12 @@ describe('AppController (e2e)', () => {
         email: 'mutoe@foxmail.com',
         password: 'invalid',
       }
-      const res = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/auth/login')
         .send(requestBody)
-        .expect(400)
-      expect(res.body).toHaveProperty('message', 'password is invalid')
+
+      expect(response.status).toBe(400)
+      expect(response.body).toHaveProperty('message', 'password is invalid')
     })
   })
 })

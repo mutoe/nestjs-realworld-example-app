@@ -1,19 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TypeOrmModule } from '@nestjs/typeorm'
 import { AppController } from 'app.controller'
 import * as request from 'supertest'
-import { UserModule } from 'user/user.module'
-import ormConfig from '../test/orm-config'
 
-describe('AppController (e2e)', () => {
+describe('App Module Integration', () => {
   let app
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot(ormConfig),
-        UserModule,
-      ],
       controllers: [AppController],
     }).compile()
 
