@@ -54,6 +54,7 @@ jobs:
 
     env:
       CI: true
+      TEST_PORT: 5433
 
     services:
       postgres:
@@ -63,21 +64,14 @@ jobs:
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: nestjs_test
         ports:
-          - 5432:5432
+          - 5433:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - uses: actions/checkout@v1
-
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql db: nestjs_test
-          postgresql user: realworld
-          postgresql password: 123456
 
       - name: Setup Nodejs
         uses: actions/setup-node@v1

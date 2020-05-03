@@ -4,7 +4,7 @@ import { UserEntity } from 'user/user.entity'
 const ormConfig: TypeOrmModuleOptions = {
   type: 'postgres',
   host: 'localhost',
-  port: 5432,
+  port: Number(process.env.TEST_PORT) || 5432,
   username: 'realworld',
   password: '123456',
   database: 'nestjs_test',
