@@ -1,13 +1,16 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+
     env:
       CI: true
-
-    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -44,3 +47,27 @@ jobs:
 #
 #      - name: Build docker image
 #        run: yarn build:docker
+
+  e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      CI: true
+
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: realworld
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: nestjs_test
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: yarn
+      - name: Run tests
+        run: yarn test:e2e
