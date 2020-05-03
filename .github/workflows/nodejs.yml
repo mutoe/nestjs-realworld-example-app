@@ -39,9 +39,14 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test
+        run: yarn test:cov
 
-#      - uses: azure/docker-login@v1
+      - name: collect coverage artifacts
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage/lcov.info
+
+  #      - uses: azure/docker-login@v1
 #        with:
 #          username: ${{ secrets.DOCKER_USERNAME }}
 #          password: ${{ secrets.DOCKER_PASSWORD }}
@@ -54,7 +59,6 @@ jobs:
 
     env:
       CI: true
-      TEST_PORT: 5433
 
     services:
       postgres:
@@ -64,12 +68,13 @@ jobs:
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: nestjs_test
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     steps:
       - uses: actions/checkout@v1
 
