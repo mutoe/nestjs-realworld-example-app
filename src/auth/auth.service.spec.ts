@@ -50,6 +50,21 @@ describe('AuthService', () => {
       expect(authData).toHaveProperty('foo', 'bar')
       expect(authData).toHaveProperty('token', 'token')
     })
+
+    it('should throw error when user name is exist', async () => {
+      jest.spyOn(userService, 'findUser').mockResolvedValue({ id: 1, username: 'exist_user' } as UserEntity)
+      const registerDto = { email: 'foo@bar.com', username: 'exist_user', password: '123456' }
+
+      await expect(authService.register(registerDto)).rejects.toThrow(new BadRequestException('username is exist'))
+    })
+
+    it('should throw error when email is exist', async () => {
+      jest.spyOn(userService, 'findUser').mockResolvedValueOnce(undefined)
+      jest.spyOn(userService, 'findUser').mockResolvedValueOnce({ id: 1, email: 'exist_email@bar.com' } as UserEntity)
+      const registerDto = { email: 'exist_email@bar.com', username: 'username', password: '123456' }
+
+      await expect(authService.register(registerDto)).rejects.toThrow(new BadRequestException('email is exist'))
+    })
   })
 
   describe('login', () => {

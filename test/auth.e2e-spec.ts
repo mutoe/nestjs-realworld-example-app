@@ -39,6 +39,32 @@ describe('AppController (e2e)', () => {
         .send(requestBody)
         .expect(201)
     })
+
+    it('should return 400 given exist username', async () => {
+      const requestBody = {
+        username: 'mutoe',
+        email: 'foo@bar.com',
+        password: '12345678',
+      }
+      const response = await request(app.getHttpServer())
+        .post('/auth/register')
+        .send(requestBody)
+        .expect(400)
+      expect(response.body).toHaveProperty('message', 'username is exist')
+    })
+
+    it('should return 400 given exist email', async () => {
+      const requestBody = {
+        username: 'foobar',
+        email: 'mutoe@foxmail.com',
+        password: '12345678',
+      }
+      const response = await request(app.getHttpServer())
+        .post('/auth/register')
+        .send(requestBody)
+        .expect(400)
+      expect(response.body).toHaveProperty('message', 'email is exist')
+    })
   })
 
   describe('/auth/login (POST)', () => {

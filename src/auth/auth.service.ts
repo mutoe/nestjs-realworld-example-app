@@ -4,6 +4,7 @@ import { AuthData } from 'auth/auth.interface'
 import { LoginDto } from 'auth/dto/login.dto'
 import { RegisterDto } from 'auth/dto/register.dto'
 import { omit } from 'lodash'
+import { UserEntity } from 'user/user.entity'
 import { UserService } from 'user/user.service'
 import { cryptoPassword } from 'utils'
 
@@ -15,7 +16,16 @@ export class AuthService {
   ) {}
 
   async register (registerDto: RegisterDto): Promise<AuthData> {
-    const user = await this.userService.createUser(registerDto)
+    let user: UserEntity | Omit<UserEntity, 'password'>
+    user = await this.userService.findUser({ username: registerDto.username })
+    if (user?.id) {
+      throw new BadRequestException('username is exist')
+    }
+    user = await this.userService.findUser({ email: registerDto.email })
+    if (user?.id) {
+      throw new BadRequestException('email is exist')
+    }
+    user = await this.userService.createUser(registerDto)
     const token = this.generateToken(user.id, user.email)
     return { ...user, token }
   }
