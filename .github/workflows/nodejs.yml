@@ -20,6 +20,18 @@ jobs:
         with:
           node-version: 12
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn install --skip-integrity-check --non-interactive --no-progress
 
@@ -43,9 +55,6 @@ jobs:
     env:
       CI: true
 
-    container:
-      image: node:10.18-jessie
-
     services:
       postgres:
         image: postgres:10.8
@@ -63,7 +72,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: nestjs_test
+          postgresql user: realworld
+          postgresql password: 123456
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install dependencies
         run: yarn --skip-integrity-check --non-interactive --no-progress
+
       - name: Run tests
         run: yarn test:e2e
