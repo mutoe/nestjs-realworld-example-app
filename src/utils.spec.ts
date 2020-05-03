@@ -1,4 +1,4 @@
-import { cryptoPassword } from './utils'
+import { cryptoPassword } from 'utils'
 
 describe('Utilities', function () {
   it('cryptoPassword', function () {

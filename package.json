@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.9",
@@ -32,6 +32,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
+    "lodash": "^4.17.15",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -48,6 +49,7 @@
     "@nestjs/testing": "^7.0.9",
     "@types/express": "^4.17.1",
     "@types/jest": "^25.2.1",
+    "@types/lodash": "^4.14.150",
     "@types/node": "^12.7.5",
     "@types/passport-jwt": "^3.0.3",
     "@types/passport-local": "^1.0.33",
@@ -106,6 +108,9 @@
       "ts"
     ],
     "rootDir": "src",
+    "modulePaths": [
+      "<rootDir>/"
+    ],
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

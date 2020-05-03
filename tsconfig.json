@@ -5,15 +5,15 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017",
+    "target": "ES6",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "incremental": true
   },
   "include": [
-    "src/**/*",
-    "test/**/*"
+    "src",
+    "test"
   ],
   "exclude": [
     "node_modules",

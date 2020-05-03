@@ -1,5 +1,13 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { cryptoPassword } from '../utils'
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
+import { cryptoPassword } from 'utils'
 
 const nullable = true
 
@@ -14,7 +22,7 @@ export class UserEntity {
   @Column({ length: 20 })
   username: string
 
-  @Column({ length: 64 })
+  @Column({ length: 64, select: false })
   password: string
 
   @BeforeUpdate()
@@ -28,4 +36,10 @@ export class UserEntity {
 
   @Column({ nullable, type: 'text' })
   image: null | string
+
+  @CreateDateColumn()
+  createdAt: string
+
+  @UpdateDateColumn()
+  updatedAt: string
 }

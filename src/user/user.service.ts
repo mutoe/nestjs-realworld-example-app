@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { UserEntity } from './user.entity'
+import { omit } from 'lodash'
 import { Repository } from 'typeorm'
+
+import { UserEntity } from './user.entity'
 
 @Injectable()
 export class UserService {
@@ -10,13 +12,15 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  createUser (userInfo: { email: string; username: string; password: string }) {
-    return this.userRepository.save(Object.assign(new UserEntity(), userInfo))
+  async createUser (userInfo: { email: string; username: string; password: string }) {
+    const result = await this.userRepository.save(Object.assign(new UserEntity(), userInfo))
+    return omit(result, ['password'])
   }
 
-  login
+  async findUser (by: { username?: string; email?: string }, withPassword = false) {
+    if (!withPassword) return this.userRepository.findOne({ where: by })
 
-  async findOne (username: string) {
-    return this.userRepository.findOne({ where: { username } })
+    const select = Object.keys(this.userRepository.metadata.propertiesMap) as (keyof UserEntity)[]
+    return this.userRepository.findOne({ where: by, select })
   }
 }

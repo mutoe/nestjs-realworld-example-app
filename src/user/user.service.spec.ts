@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { UserService } from './user.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { UserEntity } from './user.entity'
 import { Repository } from 'typeorm'
+import { UserEntity } from './user.entity'
+import { UserService } from './user.service'
 
 describe('UserService', () => {
   let service: UserService
@@ -17,6 +17,9 @@ describe('UserService', () => {
           useValue: {
             save: jest.fn(),
             findOne: jest.fn(),
+            metadata: {
+              propertiesMap: {},
+            },
           },
         },
       ],
@@ -31,19 +34,33 @@ describe('UserService', () => {
     expect(repository).toBeDefined()
   })
 
-  it('should create user correctly', async function () {
-    const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
-    await service.createUser(user)
+  describe('create user', () => {
+    it('should create user correctly', async function () {
+      const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
+      await service.createUser(user)
 
-    expect(repository.save).toBeCalledWith(Object.assign(new UserEntity(), user))
+      expect(repository.save).toBeCalledWith(Object.assign(new UserEntity(), user))
+    })
   })
 
-  it('should find user correctly', async function () {
-    const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
-    jest.spyOn(repository, 'findOne').mockResolvedValue(user as UserEntity)
-    const userResult = await service.findOne(user.username)
+  describe('find user', () => {
+    it('should find user correctly', async function () {
+      const user = { email: 'mutoe@foxmail.com', username: 'mutoe' }
+      jest.spyOn(repository, 'findOne').mockResolvedValue(user as UserEntity)
+      const userResult = await service.findUser({ username: user.username })
 
-    expect(userResult).toBe(user)
-    expect(repository.findOne).toBeCalledWith({ where: { username: user.username } })
+      expect(userResult).toBe(user)
+      expect(userResult).not.toHaveProperty('password')
+      expect(repository.findOne).toBeCalledWith({ where: { username: user.username } })
+    })
+
+    it('should find user without password when pass withoutPassword true', async () => {
+      const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
+      jest.spyOn(repository, 'findOne').mockResolvedValue(user as UserEntity)
+      repository.metadata.propertiesMap = { username: 'username', password: 'password' }
+      const userResult = await service.findUser({ username: user.username }, true)
+
+      expect(userResult).toHaveProperty('password', '12345678')
+    })
   })
 })

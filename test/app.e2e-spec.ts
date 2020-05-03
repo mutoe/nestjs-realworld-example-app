@@ -1,25 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { AppController } from 'app.controller'
 import * as request from 'supertest'
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { UserModule } from '../src/user/user.module'
-import { AppController } from '../src/app.controller'
-
-const ormConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'realworld',
-  password: '123456',
-  database: 'nestjs_test',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  dropSchema: true,
-  synchronize: true,
-}
+import { UserModule } from 'user/user.module'
+import ormConfig from '../test/orm-config'
 
 describe('AppController (e2e)', () => {
   let app
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(ormConfig),
@@ -32,7 +21,7 @@ describe('AppController (e2e)', () => {
     await app.init()
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await app.close()
   })
 
@@ -41,17 +30,5 @@ describe('AppController (e2e)', () => {
       .get('/hello?name=world')
       .expect(200)
       .expect('Hello world!')
-  })
-
-  it('/auth/register (POST)', async () => {
-    const requestBody = {
-      username: 'mutoe',
-      email: 'mutoe@foxmail.com',
-      password: '12345678',
-    }
-    await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(requestBody)
-      .expect(201)
   })
 })
