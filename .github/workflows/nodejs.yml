@@ -44,7 +44,7 @@ jobs:
       CI: true
 
     container:
-      image: node:12.10-alpine
+      image: node:10.18-jessie
 
     services:
       postgres:
@@ -55,7 +55,11 @@ jobs:
           POSTGRES_DB: nestjs_test
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v1
