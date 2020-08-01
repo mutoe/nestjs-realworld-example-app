@@ -3,9 +3,9 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from 'app.module'
 
-function createSwagger (app: INestApplication) {
-  const version = require('../package.json').version || ''
+import { version } from '../package.json'
 
+function createSwagger (app: INestApplication) {
   const options = new DocumentBuilder()
     .setTitle('Nestjs Realworld Example App')
     .setVersion(version)
