@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${TYPEORM_USERNAME:-"realworld"}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD:-"123456"}
+      POSTGRES_DB: ${TYPEORM_DATABASE:-"nestjs_realworld"}
+    ports:
+      - "5432:5432"
