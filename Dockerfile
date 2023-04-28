@@ -1,9 +1,9 @@
-FROM node:16-alpine AS dependencies
+FROM node:18-alpine AS dependencies
 WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
-RUN yarn install --production
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --prod
 
-FROM node:16-alpine
+FROM node:18-alpine
 WORKDIR /usr/src/app
 COPY package.json dist ./
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules

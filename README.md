@@ -8,7 +8,7 @@
 # Getting started
 
 ```bash
-yarn install
+pnpm install
 cp .env.template .env
 docker compose up
 ```
