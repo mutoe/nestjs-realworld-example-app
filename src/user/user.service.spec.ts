@@ -35,7 +35,7 @@ describe('UserService', () => {
   })
 
   describe('create user', () => {
-    it('should create user correctly', async function () {
+    it('should create user correctly', async () => {
       const user = { email: 'mutoe@foxmail.com', username: 'mutoe', password: '12345678' }
       await service.createUser(user)
 
@@ -44,7 +44,7 @@ describe('UserService', () => {
   })
 
   describe('find user', () => {
-    it('should find user correctly', async function () {
+    it('should find user correctly', async () => {
       const user = { email: 'mutoe@foxmail.com', username: 'mutoe' }
       jest.spyOn(repository, 'findOne').mockResolvedValue(user as UserEntity)
       const userResult = await service.findUser({ username: user.username })

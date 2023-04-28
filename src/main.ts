@@ -2,7 +2,6 @@ import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from 'app.module'
-
 import { version } from '../package.json'
 
 function createSwagger (app: INestApplication) {
@@ -27,4 +26,4 @@ async function bootstrap () {
   await app.listen(3000)
 }
 
-bootstrap().catch(err => console.error(err))
+bootstrap().catch(error => console.error(error))

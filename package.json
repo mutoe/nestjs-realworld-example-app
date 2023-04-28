@@ -14,7 +14,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"**/*.ts\"",
+    "lint": "eslint .",
     "format": "npm run lint --fix",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
@@ -43,6 +43,8 @@
     "typeorm": "^0.2"
   },
   "devDependencies": {
+    "@mutoe/eslint-config-preset-jest": "^3.4.1",
+    "@mutoe/eslint-config-preset-ts": "^3.4.1",
     "@nestjs/cli": "^8.1.6",
     "@nestjs/schematics": "^8.0.5",
     "@nestjs/testing": "^8.2.4",
@@ -52,15 +54,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/passport-local": "^1.0.34",
     "@types/supertest": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
-    "@typescript-eslint/parser": "^5.8.0",
-    "eslint": "^8.5.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jest": "^25.3.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-standard": "^5.0.0",
+    "eslint": "^8.39.0",
     "jest": "^27.4.5",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
@@ -71,34 +65,8 @@
   },
   "eslintConfig": {
     "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "./tsconfig.json",
-      "tsconfigRootDir": "./"
-    },
-    "plugins": [
-      "@typescript-eslint",
-      "jest"
-    ],
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:jest/recommended",
-      "standard"
-    ],
-    "rules": {
-      "comma-dangle": [
-        "error",
-        "always-multiline"
-      ],
-      "no-useless-constructor": "off",
-      "@typescript-eslint/explicit-function-return-type": "off"
-    }
+    "extends": ["@mutoe/eslint-config-preset-ts"]
   },
-  "eslintIgnore": [
-    "node_modules",
-    "dist",
-    "coverage"
-  ],
   "jest": {
     "moduleFileExtensions": [
       "js",

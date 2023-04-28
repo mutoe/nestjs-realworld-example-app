@@ -36,7 +36,7 @@ export class AuthService {
     return { ...user, token }
   }
 
-  async validateUser (email: string, password: string) {
+  async validateUser (email: string, password: string): Promise<Omit<UserEntity, 'password'>> {
     const user = await this.userService.findUser({ email }, true)
     if (!user) {
       throw new BadRequestException('user is not exist')
@@ -47,7 +47,7 @@ export class AuthService {
     return omit(user, 'password')
   }
 
-  generateToken (userId: number, email: string) {
+  generateToken (userId: number, email: string): string {
     return this.jwtService.sign({ userId, email })
   }
 }

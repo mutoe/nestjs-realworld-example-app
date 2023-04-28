@@ -14,16 +14,16 @@ const nullable = true
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number
+    id: number
 
   @Column({ length: 80 })
-  email: string
+    email: string
 
   @Column({ length: 20 })
-  username: string
+    username: string
 
   @Column({ length: 64, select: false })
-  password: string
+    password: string
 
   @BeforeUpdate()
   @BeforeInsert()
@@ -32,14 +32,14 @@ export class UserEntity {
   }
 
   @Column({ nullable, type: 'text' })
-  bio: null | string
+    bio: null | string
 
   @Column({ nullable, type: 'text' })
-  image: null | string
+    image: null | string
 
   @CreateDateColumn()
-  createdAt: string
+    createdAt: string
 
   @UpdateDateColumn()
-  updatedAt: string
+    updatedAt: string
 }
